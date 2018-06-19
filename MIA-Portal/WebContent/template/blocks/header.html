@@ -1,0 +1,94 @@
+ <!-- Navigation Bar-->
+        <header id="topnav" data-ng-controller="mainCtrl">
+            <div class="topbar-main">
+                <div class="container">
+
+                    <!-- LOGO -->
+                    <div class="topbar-left">
+                        <a href="#dashboard" class="logo-icon nav-link dropdown-toggle arrow-none waves-effect waves-light nav-user">
+                            <em><img src="assets/images/logo.png" alt="user" class="img-circle"></em>
+                            <span>MIA</span>
+                        </a>
+                    </div>
+                    <!-- End Logo container-->
+
+
+                    <div class="menu-extras">
+
+                        <ul class="nav navbar-nav pull-right">
+
+                            <li class="nav-item">
+                                <!-- Mobile menu toggle-->
+                                <a class="navbar-toggle">
+                                    <div class="lines">
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                    </div>
+                                </a>
+                                <!-- End mobile menu toggle-->
+                            </li>
+
+                            <li class="nav-item dropdown notification-list">
+                                <a class="nav-link right-bar-toggle" href="javascript:void(0);">
+                                    <strong style="color: #da9100">MRI Image Analysis</strong>
+                                </a>
+                            </li>
+
+                            <li class="nav-item dropdown notification-list">
+                                <a class="nav-link dropdown-toggle arrow-none waves-effect waves-light nav-user" data-toggle="dropdown" role="button"
+                                   aria-haspopup="false" aria-expanded="false">
+                                    <img src="assets/images/user icon.png" alt="user" class="img-circle">
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right dropdown-arrow profile-dropdown " aria-labelledby="Preview">
+                                    <!-- item-->
+                                    <div class="dropdown-item noti-title">
+                                        <h5 class="text-overflow"><small>MRI Image Analysis</small> </h5>
+                                    </div>
+                                    <a href data-ng-click="openChangePasswordPopUp()" class="dropdown-item notify-item select-pointer">
+                                        <em class="zmdi zmdi-settings"></em> <span>Change Password</span>
+                                    </a>
+                                    <!-- item-->
+                                    <a href data-ng-click="openLogOut()" class="dropdown-item notify-item select-pointer">
+                                        <em class="zmdi zmdi-power"></em> <span>Logout</span>
+                                    </a>
+
+                                </div>
+                            </li>
+
+                        </ul>
+
+                    </div> <!-- end menu-extras -->
+                    <div class="clearfix"></div>
+
+                </div> <!-- end container -->
+            </div>
+            <!-- end topbar-main -->
+
+
+            <div class="navbar-custom">
+                <div class="container">
+                    <div id="navigation">
+                        <!-- Navigation Menu-->
+                        <ul class="navigation-menu">
+                            <li ng-click="isActiveMenu('dashboard');"
+								ng-class="{ activemenu: isActive=='dashboard'}">
+                                <a href="#dashboard" style="padding-left: 22px;"><em class="zmdi zmdi-view-dashboard"></em> <span> Dashboard </span> </a>
+                            </li>
+                            <li ng-if="(selectPA == true && selectAP == true) ||(selectPR == true && selectRP == true) || (selectPAR==true)  || (selectP==true) " class="has-submenu" ng-class="{ activemenu: isActive=='phosphorus'}">
+                                <a class="select-pointer" href="#phosphorus" ng-click="isActiveMenu('phosphorus');"><em class="ion-navicon-round"></em> <span> Image Analysis </span> </a>
+                            </li>
+							<!--    
+                            <li ng-if="(selectAP == true && selectPA == true) ||(selectAR == true && selectRA == true) || (selectPAR==true)  || (selectA==true)" class="has-submenu" ng-class="{ activemenu: isActive=='anomaly'}">
+                                <a class="select-pointer" href="#anomaly" ng-click="isActiveMenu('anomaly');"><em class="ion-location"></em> <span> Anomaly Detection </span> </a>
+                            </li>
+                            <li ng-if="(selectPR == true && selectRP == true) ||(selectAR == true && selectRA == true) || (selectPAR==true)  || (selectR==true)" class="has-submenu" ng-class="{ activemenu: isActive=='recommendation'}">
+                                <a class="select-pointer" href="#recommendation" ng-click="isActiveMenu('recommendation');"><em class="ion-navigate"></em><span> Recommendation </span> </a>
+                            </li>
+							-->
+                        </ul>
+                        <!-- End navigation menu  -->
+                    </div>
+                </div>
+            </div>
+        </header>

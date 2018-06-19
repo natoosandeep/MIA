@@ -1,0 +1,137 @@
+
+<div ng-include="'template/blocks/header.html'"></div>
+        <div class="wrapper">
+            <div class="container">
+                <div class="row" ng-init="getDashboardCountDetails()">
+                	<div ng-repeat="cards in dashboardCardData"  class="col-xs-12 col-md-6 col-lg-6 col-xl-3">
+	                        <div class="card-box tilebox-one" style="margin-bottom: 6px;">
+	                            <em class="{{cards.icon}} pull-xs-right text-muted dashboardIcon"></em>
+	                            <h6 class="text-muted text-uppercase">{{cards.title}}</h6>
+	                            <h2 ng-show="$index == 0" class="" data-plugin="counterup"><a class="select-pointer">{{dashboardBeaconCount}}</a></h2>
+	                            <h2 ng-show="$index == 1" class="" data-plugin="counterup"><a class="select-pointer">{{dashboardGatewayCount}}</a></h2>
+	                            <h2 ng-show="$index == 2" class="" data-plugin="counterup"><a class="select-pointer">{{dashboardVenueCount}}</a></h2>
+	                        </div>
+					</div>
+                </div>
+                <!-- end row -->
+
+
+                <div class="row">
+                    <div class="col-xs-12 col-lg-12 col-xl-8">
+                        <div class="card-box">
+
+<!--                             <h4 class="header-title m-t-0">Current trends in Machine learning</h4> -->
+
+                            <div ng-show="attendanceLabel">
+                            		<canvas id="bar" class="chart chart-bar"
+									  chart-data="attendanceData" chart-labels="attendanceLabel" chart-series="attendanceSeries" chart-options="attendanceOptions">
+									</canvas>
+                            </div>
+					<div class="w3-content w3-section" style="max-width: 900px">
+						
+
+						<img class="mySlides w3-animate-fading" src="assets/images/dashboard_img/a.jpg"
+							style="width: 100%"> <img
+							class="mySlides w3-animate-fading" src="assets/images/dashboard_img/b.png"
+							style="width: 100%"> <img
+							class="mySlides w3-animate-fading" src="assets/images/dashboard_img/d.jpg"
+							style="width: 100%">
+					</div>
+
+				</div>
+                    </div><!-- end col-->
+
+                    <div class="col-xs-12 col-lg-12 col-xl-4" ng-init="getDashBoardData()">
+                        <div class="card-box" style="max-height: 424px; overflow: scroll;">
+							<h3 class="blog-title"> Blogs </h3>
+							
+								<div ng-repeat="blog in dashBoardData.Blog">
+												<div class="card-box">  
+													<h2 class="" data-plugin="counterup">
+														<p><a  class="blog-in-css" href={{dashBoardData.Blog[$index].link}}>{{dashBoardData.Blog[$index].header}}</a></p>
+														<img src="{{dashBoardData.Blog[$index].image}}">
+													</h2>
+												</div>
+											</div>
+
+                        </div>
+                    </div><!-- end col-->
+
+
+                </div>
+                <!-- end row 1-->
+                
+                
+                <div class="row">
+                    <div class="col-xs-12 col-lg-12 col-xl-8">
+                        <div class="card-box">
+
+                            <h4 class="header-title m-t-0">Attendance</h4>
+
+                            <div ng-show="attendanceLabel">
+                            		<canvas id="bar" class="chart chart-bar"
+									  chart-data="attendanceData" chart-labels="attendanceLabel" chart-series="attendanceSeries" chart-options="attendanceOptions">
+									</canvas>
+                            </div>
+                             <div ng-show="!attendanceLabel"  style="height:382px;text-align:center;line-height: 21rem;">
+                             	<div style="line-height: 21rem;"><h4>No data at this moment.</h4></div>
+                            </div>
+
+                        </div>
+                    </div><!-- end col-->
+
+                    <div class="col-xs-12 col-lg-12 col-xl-4" ng-init="getDashboardSpaceUtilizationReport()">
+                        <div class="card-box" style="max-height: 424px; overflow: scroll;">
+
+                            <h3 class="blog-title">Recent News</h3>
+							
+                          <div ng-repeat="blog in dashBoardData.News">
+												<div class="card-box">  
+													<h2 class="" data-plugin="counterup">
+														<p><a  class="blog-in-css" href={{dashBoardData.News[$index].link}}>{{dashBoardData.News[$index].news}}</a></p>
+													</h2>
+												</div>
+											</div>
+
+                        </div>
+                    </div><!-- end col-->
+
+
+                </div>
+                <!-- end row 2-->
+
+                <!-- Footer -->
+                <footer class="footer text-right">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xs-12">2018 &#9400; MLP</div>
+                        </div>
+                    </div>
+                </footer>
+                <!-- End Footer -->
+
+
+            </div> <!-- container -->
+
+        </div> <!-- End wrapper -->
+        
+        <script>
+
+									var myIndex = 0;
+									carousel();
+
+									function carousel() {
+										var i;
+										var x = document
+												.getElementsByClassName("mySlides");
+										for (i = 0; i < x.length; i++) {
+											x[i].style.display = "none";
+										}
+										myIndex++;
+										if (myIndex > x.length) {
+											myIndex = 1
+										}
+										x[myIndex - 1].style.display = "block";
+										setTimeout(carousel, 6000);
+									}
+								</script>

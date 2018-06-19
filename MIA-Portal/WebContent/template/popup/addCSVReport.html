@@ -1,0 +1,25 @@
+<div class="modal-content">
+	<div class="modal-header">
+		<button type="button" class="close icon-close" data-dismiss="modal"
+			aria-hidden="true" data-ng-click="cancel()"></button>
+		<h3 class="modal-title text-center" id="myModalLabel">File Upload
+			</h3>
+
+	</div>
+	<div class="modal-body">
+		<p>Select Your MRI File.</p>
+		
+		<input type="file" file-reader="fileContent" accept=".dcm"/>
+   		 <!-- <div>{{fileContent}}</div> -->
+    </div>
+    
+    
+    
+	<div class="modal-footer">
+		<button type="button" class="btn btn-success" data-ng-click="saveCSVDataInBulk()" style="background-color: #1CAF9A !important;">Upload</button>
+		<button type="button" class="btn btn-cancel" data-ng-click="cancel()">Cancel</button>
+	</div>
+	
+	<div data-ng-show="payment_error"
+		class="alert alert-info alert-dismissable">{{errorMessage}}</div>
+</div>

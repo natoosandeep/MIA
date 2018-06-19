@@ -1,0 +1,593 @@
+<style>
+.ng-table-pagination {
+	display: -webkit-inline-box;
+	margin: 10px 0px;
+	list-style: none;
+}
+
+.prev, .next {
+	cursor: pointer;
+}
+/* Global CSS, you probably don't need that */
+.clearfix:after {
+	clear: both;
+	content: "";
+	display: block;
+	height: 0;
+}
+
+canvas {
+	margin: 10px 0px;
+}
+
+a, a:active {
+	color: #da9100;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #999;
+}
+
+/* Breadcrups CSS */
+.arrow-steps .step {
+	font-size: 14px;
+	text-align: center;
+	color: #666;
+	cursor: default;
+	margin: 3px 3px;
+	padding: 5px 10px 10px 30px;
+	min-width: 180px;
+	float: left;
+	position: relative;
+	background-color: #d9e3f7;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	transition: background-color 0.2s ease;
+}
+
+.arrow-steps .step:after, .arrow-steps .step:before {
+	content: " ";
+	position: absolute;
+	top: 0;
+	right: -17px;
+	width: 0;
+	height: 0;
+	border-top: 19px solid transparent;
+	border-bottom: 17px solid transparent;
+	border-left: 17px solid #d9e3f7;
+	z-index: 2;
+	transition: border-color 0.2s ease;
+}
+
+.arrow-steps .step:before {
+	right: auto;
+	left: 0;
+	border-left: 17px solid #fff;
+	z-index: 0;
+}
+
+.arrow-steps .step:first-child:before {
+	border: none;
+}
+
+.arrow-steps .step:first-child {
+	border-top-left-radius: 4px;
+	border-bottom-left-radius: 4px;
+}
+
+.arrow-steps .step span {
+	position: relative;
+}
+
+.arrow-steps .step span:before {
+	opacity: 0;
+	content: "✔";
+	position: absolute;
+	top: -2px;
+	left: -20px;
+}
+
+.arrow-steps .step.done span:before {
+	opacity: 1;
+	-webkit-transition: opacity 0.3s ease 0.5s;
+	-moz-transition: opacity 0.3s ease 0.5s;
+	-ms-transition: opacity 0.3s ease 0.5s;
+	transition: opacity 0.3s ease 0.5s;
+}
+
+.arrow-steps .step.current {
+	color: #fff;
+	background-color: #23468c;
+}
+
+.arrow-steps .step.current:after {
+	border-left: 17px solid #23468c;
+}
+
+.disablePhosphorusAnchor {
+	border: 1px;
+	margin: 10px;
+}
+
+body {
+	background-color: #eceeef;
+}
+
+#preloader {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+#loader {
+	display: block;
+	position: relative;
+	left: 50%;
+	top: 50%;
+	width: 150px;
+	height: 150px;
+	margin: -75px 0 0 -75px;
+	border-radius: 50%;
+	border: 3px solid transparent;
+	border-top-color: #9370DB;
+	-webkit-animation: spin 2s linear infinite;
+	animation: spin 2s linear infinite;
+}
+
+#loader:before {
+	content: "";
+	position: absolute;
+	top: 5px;
+	left: 5px;
+	right: 5px;
+	bottom: 5px;
+	border-radius: 50%;
+	border: 3px solid transparent;
+	border-top-color: #BA55D3;
+	-webkit-animation: spin 3s linear infinite;
+	animation: spin 3s linear infinite;
+}
+
+#loader:after {
+	content: "";
+	position: absolute;
+	top: 15px;
+	left: 15px;
+	right: 15px;
+	bottom: 15px;
+	border-radius: 50%;
+	border: 3px solid transparent;
+	border-top-color: #FF00FF;
+	-webkit-animation: spin 1.5s linear infinite;
+	animation: spin 1.5s linear infinite;
+}
+
+@
+-webkit-keyframes spin { 0% {
+	-webkit-transform: rotate(0deg);
+	-ms-transform: rotate(0deg);
+	transform: rotate(0deg);
+}
+
+100%
+{
+-webkit-transform
+:
+ 
+rotate
+(360deg);
+
+        
+-ms-transform
+:
+ 
+rotate
+(360deg);
+
+        
+transform
+:
+ 
+rotate
+(360deg);
+
+    
+}
+}
+@
+keyframes spin { 0% {
+	-webkit-transform: rotate(0deg);
+	-ms-transform: rotate(0deg);
+	transform: rotate(0deg);
+}
+100%
+{
+-webkit-transform
+:
+ 
+rotate
+(360deg);
+
+        
+-ms-transform
+:
+ 
+rotate
+(360deg);
+
+        
+transform
+:
+ 
+rotate
+(360deg);
+
+    
+}
+}
+</style>
+
+<div ng-include="'template/blocks/header.html'"></div>
+<div class="wrapper">
+	<div class="container">
+
+		<div class="row">
+			<div class="col-md-12">
+				<h4 class="page-title text-uppercase">
+					<!-- Title -->
+				</h4>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-12">
+				<div class="card-box">
+					<div>
+						<div class="row"
+							>
+							<div ng-repeat="value in phosphorusCardDetails.values"
+								class="col-xs-3 col-md-3 col-lg-3 col-xl-3">
+								<div class="card-box tilebox-one" style="margin-bottom: 6px;">
+									<em class="fa fa-user pull-xs-right text-muted dashboardIcon"></em>
+									<h6 class="text-muted text-uppercase">{{phosphorusCardDetails.titles[$index]}}</h6>
+									<h2 class="" data-plugin="counterup">
+										<a class="select-pointer">{{phosphorusCardDetails.values[$index]}}</a>
+									</h2>
+								</div>
+							</div>
+						</div>
+						<div class="arrow-steps clearfix row">
+							<div class="col-md-1 col-sm-1"></div>
+							<div class="step current col-md-2 col-sm-2 col-xs-12"
+								id="uploadCSV">
+								<span> Upload Image </span>
+							</div>
+							<div class="step col-md-3 col-sm-3 col-xs-12" id="dataCleaning">
+								<span> Input Image Analysis </span>
+							</div>
+							<div class="step col-md-3 col-sm-3 col-xs-12" id="applyingModel">
+								<span> Applying Model </span>
+							</div>
+							<div class="step col-md-2 col-sm-2 col-xs-12"
+								id="phosphorusResult">
+								<span> Result </span>
+							</div>
+							<div class="col-md-1 col-sm-1"></div>
+						</div>
+						<div></div>
+
+						<div class="Firfx_chrm_csv" ng-if="phosphorusCurrentStep == 'uploadCSV'">
+							<div class="p-20">
+								<div class="form-group clearfix"
+									style="display: table-cell; vertical-align: middle;">
+									<div class="col-sm-12 padding-left-0 padding-right-0">
+										<!-- <input type="file" name="files[]" id="filer_input1"
+	                                                     multiple="multiple"> -->
+										<button class="btn btn-info"
+											ng-click="openAddCSVReportPopup()">Add Image
+											</button>
+
+									</div>
+
+								</div>
+
+							</div>
+
+						</div>
+
+						<div class="p-20"
+							style="top: 47%; left: 0%; text-align: center; display: table; width: 100%;position: absolute;">
+							<button class="next btn btn-info disablePhosphorusAnchorSkip"
+								ng-click="currentPhosphorusStep('next')">Skip Image
+								</button>
+						</div>
+
+						<div  class="Firfx_chrm_data_clen" ng-if="phosphorusCurrentStep == 'dataCleaning'" >
+							<div ng-if="!phosphorusDataCleaningList"
+								style="min-height: 280px; top: 50%; left: 50%; text-align: center; display: table; width: 100%;">
+								<span style="display: table-cell; vertical-align: middle;">
+									Data processing taking place. This process may
+									take some time. </span>
+							</div>
+							<div ng-if="phosphorusDataCleaningList" class="row">
+								<img ng-src="data:image/JPEG;base64,{{myImage}}"/>
+								<img ng-src="data:image/png;base64,{{myImage}}" id="photo-id"/>
+								<img ng-src="{{myImage}}" />
+								<!--  
+								<div class="col-md-6 sm-6 col-lg-6 col-xs-12">
+									<h5 style="margin: 10px;">
+										{{ phosphorusDataCleaningList.TABLE_LABELS }}
+										</h3>
+										<div class="card-box table-responsive"
+											style="margin: 20px 0px;">
+											<table id="datatable"
+												class="table table-striped table-bordered">
+												<thead>
+													<tr>
+														<th rowspan="1">Attribute</th>
+														<th rowspan="1">Value</th>
+													</tr>
+
+												</thead>
+
+												<tbody>
+													<tr
+														dir-paginate="data in phosphorusDataCleaningList.TABLE_TITLES | itemsPerPage: attendanceItemPerPageCount"
+														current-page="attendanceCurrentPage"
+														total-items="totalAttendanceCount" class="cursor-pointer"
+														pagination-id="attendance">
+														<td>{{phosphorusDataCleaningList.TABLE_TITLES[$index]}}</td>
+														<td>{{phosphorusDataCleaningList.TABLE_VALUES[$index]}}</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+								</div>
+								<div class="col-md-6 sm-6 col-lg-6 col-xs-12">
+									<h5 style="margin: 10px;">
+										{{ phosphorusDataCleaningList.PIE_CHART_LABELS }}
+										</h3>
+										<div class="phosphorus-chart-container">
+											<canvas id="pie" class="chart chart-pie"
+												chart-data="phosphorusDataCleaningList.PIE_CHART_VALUES"
+												chart-labels="phosphorusDataCleaningList.PIE_CHART_TITLES"
+												chart-options="dataCleaningOptions" width="400" height="150">
+												</canvas>
+										</div>
+								</div>
+								-->
+							</div>
+						</div>
+						<!-- data cleaning end -->
+
+						<div class="Firfx_chrm_aply_mdl" ng-if="phosphorusCurrentStep == 'applyingModel'"">
+							<div
+								style="min-height: 280px; top: 50%; left: 50%; text-align: center; display: table; width: 100%;">
+								<div class="col-xs-6"></div>
+								<div class="col-xs-6"></div>
+								<div class="col-xs-6"></div>
+								<div class="col-xs-6"></div>
+								<div class="col-xs-3"></div>
+								<span
+									style="display: table-cell; vertical-align: middle; text-align: center;">
+									<div id="preloader">
+										<div id="loader"></div>
+									</div>
+								</span>
+							</div>
+						</div>
+
+						<div class="anomalyFilter"
+							ng-if="phosphorusCurrentStep == 'phosphorusResult'"
+							style="margin: 10px;">
+							<p style="display: -webkit-inline-box; margin: 0px 10px;">
+								Total records: <strong>{{phosphorusListDetails.Actual_Values_JSON_LINE_CHART_10.length}}</strong>
+							</p>
+							Start count: <input type="number" class="form-control"
+								ng-model="startCount" placeholder="Start count"
+								style="width: auto; display: -webkit-inline-box;"
+								onkeypress="return isNumber(event)"> End count: <input
+								type="number" class="form-control" ng-model="endCount"
+								placeholder="Max count {{phosphorusListDetails.Actual_Values_JSON_LINE_CHART_10.length}}"
+								style="width: auto; display: -webkit-inline-box;"
+								onkeypress="return isNumber(event)">
+							<button class="btn btn-info"
+								ng-click="phosphorusLineBarChartFilter(startCount,endCount)">Show
+								Results</button>
+						</div>
+						<div ng-if="phosphorusCurrentStep == 'phosphorusResult'"
+							class="row">
+							<div class="col-md-12 sm-12 col-lg-12 col-xs-12">
+								<canvas id="base" class="chart-bar"
+									chart-data="phosphorusResultLineChartData"
+									chart-labels="phosphorusResultLineChartLabels"
+									chart-colors="colors" chart-dataset-override="datasetOverride"
+									chart-options="phosphorusResultLineOptions" width="400"
+									height="180">
+										</canvas>
+							</div>
+							<div class="col-md-12 sm-12 col-lg-12 col-xs-12">
+								<div class="card-box table-responsive" style="margin: 20px 0px;">
+									<!-- <table ng-table="tableParams" class="table">
+												    <tr ng-repeat="dat in $data.HM_Mn_1">
+												        <td>{{$index}}</td>
+												    </tr>
+												  </table> -->
+									<!--<table ng-table="tableParams" show-filter="true" class="table table-bordered table-striped">
+												      <tr ng-repeat="row in $data ">
+												        <td>{{row.HM_Mn_1}} test</td>
+												      </tr>
+												    </table>-->
+									<div class="my-controller">
+										<div class="row">
+											<div class="col-xs-4">
+												<h3>Phosphorus Page: {{ currentPage }}</h3>
+											</div>
+											<div class="col-xs-4">
+												<label for="search">Search:</label> <input ng-model="q"
+													id="search" class="form-control" placeholder="Filter text">
+											</div>
+											<div class="col-xs-4">
+												<label for="search">items per page:</label> <input
+													type="number" min="1" max="100" class="form-control"
+													ng-model="pageSize">
+											</div>
+										</div>
+										
+							<!-- 			<div class="dropdown dropdown-scroll" style="margin-top: 6px;margin-left: -60px;">
+
+		<select id="certificate" multiple="multiple" style="visibility: collapse; resize: vertical; margin-top: 0px; margin-bottom: 0px; height: 15px;">
+      
+            <option ng-repeat="option in options" value="{{option.value}}" ng-model="selectedCertificates" ng-selected=option.isCertSelected ng-change="CheckCertificate(selectedCertificates,$index)">{{option.value}}</option>
+        </select>
+  </div> -->
+								<!-- 	<div >
+								
+										<div class="col-sm-4">
+											<select id="status"  multiple="multiple" style="border: none !important;margin: 0px 0px 0px 22px !important;">
+												<option>HM_Mn</option>
+												<option>Inblow_P</option>
+												<option>Inblow_C</option>
+												<option>Inblow_Mn</option>
+												<option>EOB_Mn</option>
+												<option>TSC_TEMP</option>
+												<option>TSOP_TEMP</option>
+												<option>TSOP_O_PPM</option>
+												<option>O2_2nd_Blow</option>
+												<option>Actual_EOB_P_Values</option>
+												<option>Predicted_EOB_P_Values</option>
+											</select>
+										</div>
+									</div> -->
+									<div class="row">
+											<div class="col-xs-12">
+											<div ng-dropdown-multiselect="" options="columnName" selected-model="selectedColumn" events="yourEvents" extra-settings="checkBoxSettings"></div>
+										</div>
+										 </div>	
+										 <br>
+										<div class="panel">
+											<div class="panel-body">
+												<table id="datatable"
+													class="table table-striped table-bordered">
+													<thead>
+														<tr>
+															
+															<th ng-if="filterPhosphorusGridColumn[0].isValid">HM_Mn_1</th>
+														  	<th ng-if="filterPhosphorusGridColumn[1].isValid">Inblow_P_2</th>
+														  	<th ng-if="filterPhosphorusGridColumn[2].isValid">Inblow_C_3</th>
+														  	<th ng-if="filterPhosphorusGridColumn[3].isValid">Inblow_Mn_4</th>
+														  	<th ng-if="filterPhosphorusGridColumn[4].isValid">EOB_Mn_5</th>
+														  	<th ng-if="filterPhosphorusGridColumn[5].isValid">TSC_TEMP_6</th>
+														  	<th ng-if="filterPhosphorusGridColumn[6].isValid">TSOP_TEMP_7</th>
+														  	<th ng-if="filterPhosphorusGridColumn[7].isValid">TSOP_O_PPM_8</th>
+														  	<th ng-if="filterPhosphorusGridColumn[8].isValid">O2_2nd_Blow_9</th>
+														  	<th ng-if="filterPhosphorusGridColumn[9].isValid">Actual_Values_JSON_LINE_CHART_10</th>
+														  	<th ng-if="filterPhosphorusGridColumn[10].isValid">Predicted_Values_JSON_LINE_CHART_11</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr
+															dir-paginate="data in phosphorusObject1 | filter:q | itemsPerPage: pageSize"
+															current-page="currentPage">
+															<td ng-if="filterPhosphorusGridColumn[0].isValid">{{data.HM_Mn_2 | number:6 }}</td>
+															<td ng-if="filterPhosphorusGridColumn[1].isValid">{{data.Inblow_P_2 | number:6}}</td>
+															<td ng-if="filterPhosphorusGridColumn[2].isValid">{{data.Inblow_C_3 | number:6}}</td>
+															<td ng-if="filterPhosphorusGridColumn[3].isValid">{{data.Inblow_Mn_4 | number:6}}</td>
+															<td ng-if="filterPhosphorusGridColumn[4].isValid">{{data.EOB_Mn_5 | number:6}}</td>
+															<td ng-if="filterPhosphorusGridColumn[5].isValid">{{data.TSC_TEMP_6 | number:2}}</td>
+															<td ng-if="filterPhosphorusGridColumn[6].isValid">{{data.TSOP_TEMP_7 | number:2}}</td>
+															<td ng-if="filterPhosphorusGridColumn[7].isValid">{{data.TSOP_O_PPM_8 | number}}</td>
+															<td ng-if="filterPhosphorusGridColumn[8].isValid">{{data.O2_2nd_Blow_9 | number}}</td>
+															<td ng-if="filterPhosphorusGridColumn[9].isValid">{{data.Actual_Values_JSON_LINE_CHART_10 |
+																number:6}}</td>
+															<td ng-if="filterPhosphorusGridColumn[10].isValid">{{data.Predicted_Values_JSON_LINE_CHART_11 |
+																number:6}}</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+
+									<div class="other-controller">
+										<div class="text-center">
+											<dir-pagination-controls boundary-links="true"
+												on-page-change="pageChangeHandler(newPageNumber)"
+												template-url="template/dirPagination.tpl.html"></dir-pagination-controls>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="nav clearfix" style="display: inline-flex;">
+							<div id="prev" style="padding-right: 458px;">
+								<a
+									class="prev btn btn-primary btn-rounded disablePhosphorusAnchor"
+									ng-click="currentPhosphorusStep('prev')">Previous</a>
+							</div>
+							<div id="nxt" style="padding-left: 496px;">
+								<a
+									class="next pull-right btn btn-primary btn-rounded disablePhosphorusAnchor"
+									ng-click="currentPhosphorusStep('next')">Next</a>
+							</div>
+							<div ng-if="phosphorusCurrentStep == 'phosphorusResult'"
+								id="finish" style="padding-left: 505px;">
+								<a
+									class="next pull-right btn btn-primary btn-rounded disablePhosphorusFinishAnchor"
+									ng-click="gotoDashboard()">Finish</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<footer class="footer text-right">
+			<div class="container">
+				<div class="row">
+					<div class="col-xs-12">2018 © MIA</div>
+				</div>
+			</div>
+		</footer>
+
+	</div>
+	<!-- container -->
+</div>
+<!-- wrapper -->
+
+
+
+<script>
+$('select').multiselect({includeSelectAllOption: true});
+          jQuery( document ).ready(function() {
+      		
+      		var back =jQuery(".prev");
+      		var	next = jQuery(".next");
+      		var	steps = jQuery(".step");
+      		
+      		next.bind("click", function() { 
+      			jQuery.each( steps, function( i ) {
+      				if (!jQuery(steps[i]).hasClass('current') && !jQuery(steps[i]).hasClass('done')) {
+      					jQuery(steps[i]).addClass('current');
+      					jQuery(steps[i - 1]).removeClass('current').addClass('done');
+      					return false;
+      				}
+      			})		
+      		});
+      		back.bind("click", function() { 
+      			jQuery.each( steps, function( i ) {
+      				if (jQuery(steps[i]).hasClass('done') && jQuery(steps[i + 1]).hasClass('current')) {
+      					jQuery(steps[i + 1]).removeClass('current');
+      					jQuery(steps[i]).removeClass('done').addClass('current');
+      					return false;
+      				}
+      			})		
+      		});
+
+      	})
+</script>

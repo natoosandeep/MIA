@@ -1,0 +1,668 @@
+<style>
+.prev, .next {
+	cursor: pointer;
+}
+/* Global CSS, you probably don't need that */
+.clearfix:after {
+	clear: both;
+	content: "";
+	display: block;
+	height: 0;
+}
+
+canvas {
+	margin: 10px 0px;
+}
+
+a, a:active {
+	color: #da9100;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #999;
+}
+
+/* Breadcrups CSS */
+.arrow-steps .step {
+	font-size: 14px;
+	text-align: center;
+	color: #666;
+	cursor: default;
+	margin: 3px 3px;
+	padding: 5px 10px 10px 30px;
+	min-width: 180px;
+	float: left;
+	position: relative;
+	background-color: #d9e3f7;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	transition: background-color 0.2s ease;
+}
+
+.arrow-steps .step:after, .arrow-steps .step:before {
+	content: " ";
+	position: absolute;
+	top: 0;
+	right: -17px;
+	width: 0;
+	height: 0;
+	border-top: 19px solid transparent;
+	border-bottom: 17px solid transparent;
+	border-left: 17px solid #d9e3f7;
+	z-index: 2;
+	transition: border-color 0.2s ease;
+}
+
+.arrow-steps .step:before {
+	right: auto;
+	left: 0;
+	border-left: 17px solid #fff;
+	z-index: 0;
+}
+
+.arrow-steps .step:first-child:before {
+	border: none;
+}
+
+.arrow-steps .step:first-child {
+	border-top-left-radius: 4px;
+	border-bottom-left-radius: 4px;
+}
+
+.arrow-steps .step span {
+	position: relative;
+}
+
+.arrow-steps .step span:before {
+	opacity: 0;
+	content: "✔";
+	position: absolute;
+	top: -2px;
+	left: -20px;
+}
+
+.arrow-steps .step.done span:before {
+	opacity: 1;
+	-webkit-transition: opacity 0.3s ease 0.5s;
+	-moz-transition: opacity 0.3s ease 0.5s;
+	-ms-transition: opacity 0.3s ease 0.5s;
+	transition: opacity 0.3s ease 0.5s;
+}
+
+.arrow-steps .step.current {
+	color: #fff;
+	background-color: #23468c;
+}
+
+.arrow-steps .step.current:after {
+	border-left: 17px solid #23468c;
+}
+
+h3 {
+	text-align: center;
+}
+
+.recommendationByMachineLeaning {
+	/* border: 1px solid black; */
+	padding: 5px;
+	border-radius: 5px;
+	font-size: 17px;
+	margin: 10px;
+	list-style: none;
+}
+
+.recommendationBulletStyles:before {
+	content: "\f105";
+	font-family: FontAwesome;
+	margin-right: 4px;
+}
+
+body {
+	background-color: #eceeef;
+}
+
+#preloader {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+#loader {
+	display: block;
+	position: relative;
+	left: 50%;
+	top: 50%;
+	width: 150px;
+	height: 150px;
+	margin: -75px 0 0 -75px;
+	border-radius: 50%;
+	border: 3px solid transparent;
+	border-top-color: #9370DB;
+	-webkit-animation: spin 2s linear infinite;
+	animation: spin 2s linear infinite;
+}
+
+#loader:before {
+	content: "";
+	position: absolute;
+	top: 5px;
+	left: 5px;
+	right: 5px;
+	bottom: 5px;
+	border-radius: 50%;
+	border: 3px solid transparent;
+	border-top-color: #BA55D3;
+	-webkit-animation: spin 3s linear infinite;
+	animation: spin 3s linear infinite;
+}
+
+#loader:after {
+	content: "";
+	position: absolute;
+	top: 15px;
+	left: 15px;
+	right: 15px;
+	bottom: 15px;
+	border-radius: 50%;
+	border: 3px solid transparent;
+	border-top-color: #FF00FF;
+	-webkit-animation: spin 1.5s linear infinite;
+	animation: spin 1.5s linear infinite;
+}
+
+@
+-webkit-keyframes spin { 0% {
+	-webkit-transform: rotate(0deg);
+	-ms-transform: rotate(0deg);
+	transform: rotate(0deg);
+}
+
+100%
+{
+-webkit-transform
+:
+ 
+rotate
+(360deg);
+
+        
+-ms-transform
+:
+ 
+rotate
+(360deg);
+
+        
+transform
+:
+ 
+rotate
+(360deg);
+
+    
+}
+}
+@
+keyframes spin { 0% {
+	-webkit-transform: rotate(0deg);
+	-ms-transform: rotate(0deg);
+	transform: rotate(0deg);
+}
+100%
+{
+-webkit-transform
+:
+ 
+rotate
+(360deg);
+
+        
+-ms-transform
+:
+ 
+rotate
+(360deg);
+
+        
+transform
+:
+ 
+rotate
+(360deg);
+
+    
+}
+}
+</style>
+<div ng-include="'template/blocks/header.html'"></div>
+<div class="wrapper">
+	<div class="container">
+
+		<div class="row">
+			<div class="col-md-12">
+				<h4 class="page-title text-uppercase">
+					<!-- Recommendation -->
+				</h4>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-12">
+				<div class="card-box">
+					<div>
+						<div class="arrow-steps clearfix row" style="margin-bottom: 10px;">
+							<div class="col-md-1 col-sm-1"></div>
+							<div class="step current col-md-2 col-sm-2 col-xs-12"
+								id="uploadCSV">
+								<span> Upload CSV </span>
+							</div>
+							<div class="step col-md-3 col-sm-3 col-xs-12" id="dataCleaning">
+								<span> Input Data Analysis </span>
+							</div>
+							<div class="step col-md-3 col-sm-3 col-xs-12" id="applyingModel">
+								<span> Applying Model </span>
+							</div>
+							<div class="step col-md-2 col-sm-2 col-xs-12"
+								id="recommendationResult">
+								<span> Result </span>
+							</div>
+							<div class="col-md-1 col-sm-1"></div>
+						</div>
+
+						<div class="Firfx_chrm_csv" ng-if="recommendationCurrentStep == 'uploadCSV'">
+							<div class="p-20">
+								<div class="form-group clearfix"
+									style="top: 42%; left: 0%; text-align: center; display: table; width: 100%;position: absolute;     margin-top: -1%;">
+									<div class="col-sm-12 padding-left-0 padding-right-0">
+										<!-- <input type="file" name="files[]" id="filer_input1"
+	                                                     multiple="multiple"> -->
+										<button class="btn btn-info"
+											ng-click="openAddCSVReportPopup()">Add CSV Data in
+											Bulk</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="p-20"
+						style="top: 48%; left: 0%; text-align: center; display: table; width: 100%;position: absolute;">
+							<button class="next btn btn-info disablePhosphorusAnchorSkip"
+								ng-click="currentRecommendationStep('next')">Skip
+								Adding CSV Data</button>
+						</div>
+
+						<div  ng-if="recommendationCurrentStep == 'dataCleaning'" >
+						<h5 style="margin: 19% 0% 0% 3%;">
+										{{ recommendationDataCleaningList.TABLE_LABEL }}
+										</h5>
+							<div class="col-xs-12">
+								
+									<div>
+										<div >
+											<div ng-repeat="value in recommendationDataCleaningList.TABLE_TITLES"
+												class="col-xs-4">
+												<div class="card-box tilebox-one"
+													style="margin-bottom: 6px; margin-left: 0%; font-family: initial;">
+													
+													<h5 class="text-muted text-uppercase">{{recommendationDataCleaningList.TABLE_VALUES.FILES[$index]}}</h5>
+													<h2 class="" data-plugin="counterup">
+														<a class="select-pointer" style="font-size: 20px;">{{recommendationDataCleaningList.TABLE_TITLES[0]}}   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= {{recommendationDataCleaningList.TABLE_VALUES.TOTAL_DATA[$index]}}</a><br>
+														<a class="select-pointer" style="font-size: 20px;">{{recommendationDataCleaningList.TABLE_TITLES[1]}}   &nbsp;&nbsp; = {{recommendationDataCleaningList.TABLE_VALUES.MISSING_DATA[$index]}}</a><br>
+														<a class="select-pointer" style="font-size: 20px;">{{recommendationDataCleaningList.TABLE_TITLES[2]}}   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= {{recommendationDataCleaningList.TABLE_VALUES.NORMAL_DATA[$index]}}</a>
+													</h2>
+												</div>
+												
+											</div>
+											
+										</div>
+										
+									</div>
+								
+							</div>
+							<h5 style="margin: 19% 0% 0% 3%;">
+										{{ recommendationDataCleaningList.PIE_LABEL }}
+										</h5>
+							<div class="col-xs-12">
+								<div class="col-xs-4">
+									<div class="card-box table-responsive" style="margin: 20px 0px;">
+								<div class="anomaly-chart-container" style="max-height: 375px;">
+										<div >
+											
+											
+											<canvas  class="chart chart-pie"
+												chart-data="recommendationDataCleaningList.PASS_GEO_PIE_VALUES"
+												chart-labels="recommendationDataCleaningList.PIE_TITLES"
+												chart-options="dataCleaningOptions" width="435" height="175">
+												</canvas>
+											
+											
+										</div>
+										
+									</div>
+									</div>
+								
+							</div>
+							
+							<div class="col-xs-4">
+									<div class="card-box table-responsive" style="margin: 20px 0px;">
+								<div class="anomaly-chart-container" style="max-height: 375px;">
+										<div >
+											
+											
+											<canvas  class="chart chart-pie"
+												chart-data="recommendationDataCleaningList.PASSIVE_PIE_VALUES"
+												chart-labels="recommendationDataCleaningList.PIE_TITLES"
+												chart-options="dataCleaningOptions" width="400" height="150">
+												</canvas>
+											
+											
+										</div>
+										
+									</div>
+									</div>
+								
+							</div>
+							
+							
+							<div class="col-xs-4">
+									<div class="card-box table-responsive" style="margin: 20px 0px;">
+								<div class="anomaly-chart-container" style="max-height: 375px;">
+										
+											
+											
+											<canvas class="chart chart-pie"
+												chart-data="recommendationDataCleaningList.UBM_PROFILE_PIE_VALUES"
+												chart-labels="recommendationDataCleaningList.PIE_TITLES"
+												chart-options="dataCleaningOptions" width="400" height="150">
+												</canvas>
+											
+											
+									
+									</div>
+									</div>
+								
+							</div>
+							
+							</div>
+							
+							
+						</div>
+
+										<!-- <div  class="Firfx_chrm_data_clen" ng-if="recommendationCurrentStep == 'dataCleaning'">
+							<div ng-if="!recommendationDataCleaningList"
+								style="min-height: 280px; top: 50%; left: 50%; text-align: center; display: table; width: 100%;">
+								<span style="display: table-cell; vertical-align: middle;">
+									Data cleaning and normalization taking place. This process may
+									take some time. </span>
+							</div>
+							<div ng-if="recommendationDataCleaningList" class="row">
+								<div class="col-md-6 sm-6 col-lg-6 col-xs-12">
+									<h5 style="margin: 10px;">
+										{{ recommendationDataCleaningList.TABLE_LABEL }}
+										</h3>
+										<div class="card-box table-responsive"
+											style="margin: 20px 0px;">
+											<table id="datatable"
+												class="table table-striped table-bordered">
+												<thead>
+													<tr>
+														<th rowspan="1">File</th>
+														<th rowspan="1">Total Data</th>
+														<th rowspan="1">Missing Value</th>
+														<th rowspan="1">Normal Data</th>
+													</tr>
+
+												</thead>
+
+												<tbody>
+													<tr
+														dir-paginate="data in recommendationDataCleaningList.TABLE_TITLE | itemsPerPage: attendanceItemPerPageCount"
+														current-page="attendanceCurrentPage"
+														total-items="totalAttendanceCount" class="cursor-pointer"
+														pagination-id="attendance">
+														<td>{{recommendationDataCleaningList.TABLE_TITLE[$index]}}</td>
+														<td>{{recommendationDataCleaningList.TOTAL_DATA[$index]}}</td>
+														<td>{{recommendationDataCleaningList.MISSING_DATA[$index]}}</td>
+														<td>{{recommendationDataCleaningList.NORMAL_DATA[$index]}}</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+								</div>
+								<div class="col-md-6 sm-6 col-lg-6 col-xs-12">
+								<h5 style="margin: 10px;">{{ recommendationDataCleaningList.PIE_LABEL }}</h5>
+								<div class="card-box table-responsive" style="margin: 20px 0px;">
+								<div class="anomaly-chart-container" style="max-height: 236px; overflow: scroll;">
+											<div>
+											<canvas  class="chart chart-pie"
+												chart-data="recommendationDataCleaningList.PASS_GEO_PIE_VALUES"
+												chart-labels="recommendationDataCleaningList.PIE_TITLES"
+												chart-options="dataCleaningOptions" width="400" height="150">
+												</canvas>
+										   </div>
+											<canvas  class="chart chart-pie"
+												chart-data="recommendationDataCleaningList.PASSIVE_PIE_VALUES"
+												chart-labels="recommendationDataCleaningList.PIE_TITLES"
+												chart-options="dataCleaningOptions" width="400" height="150">
+												</canvas>
+											
+										
+											<canvas class="chart chart-pie"
+												chart-data="recommendationDataCleaningList.UBM_PROFILE_PIE_VALUES"
+												chart-labels="recommendationDataCleaningList.PIE_TITLES"
+												chart-options="dataCleaningOptions" width="400" height="150">
+												</canvas>
+											
+										</div>
+								</div>
+							</div>
+							</div>
+
+						</div> -->
+
+										<div class="Firfx_chrm_aply_mdl"
+											ng-if="recommendationCurrentStep == 'applyingModel'">
+											<div
+												style="min-height: 280px; top: 50%; left: 50%; text-align: center; display: table; width: 100%;">
+												<div class="col-xs-6"></div>
+												<div class="col-xs-6"></div>
+												<div class="col-xs-6"></div>
+												<div class="col-xs-6"></div>
+												<div class="col-xs-3"></div>
+												<span
+													style="display: table-cell; vertical-align: middle; text-align: center;">
+													<div id="preloader">
+														<div id="loader"></div>
+													</div>
+												</span>
+											</div>
+										</div>
+
+										<div
+											ng-if="recommendationCurrentStep == 'recommendationResult'"
+											class="row">
+											<div class="col-md-6 sm-6 col-lg-6 col-xs-12">
+												<h3>{{policyUrlChartLabelTitle || 'Bar Chart'}}</h3>
+												<canvas id="base" class="chart-bar"
+													chart-data="recommendationUrlBarChartData"
+													chart-labels="recommendationUrlBarChartLabels"
+													chart-colors="colors"
+													chart-dataset-override="recommendationURLBarDatatasetOverride"
+													width="400" height="250">
+										</canvas>
+											</div>
+											<div class="col-md-6 sm-6 col-lg-6 col-xs-12">
+												<h3>{{policyAppChartLabelTitle || 'Bar Chart'}}</h3>
+												<canvas id="base" class="chart-bar"
+													chart-data="recommendationAppBarChartData"
+													chart-labels="recommendationAppBarChartLabels"
+													chart-colors="colors"
+													chart-dataset-override="recommendationAppBarDatatasetOverride"
+													width="400" height="250">
+										</canvas>
+											</div>
+											<div class="col-md-6 sm-6 col-lg-6 col-xs-12">
+												<h3>{{categoryBarChartLabelTitle || 'Bar Chart'}}</h3>
+												<canvas id="base" class="chart-bar"
+													chart-data="recommendationCategoryBarChartData"
+													chart-labels="recommendationCategoryBarChartLabels"
+													chart-colors="colors"
+													chart-dataset-override="recommendationCategoryBarDatatasetOverride"
+													width="400" height="250">
+										</canvas>
+											</div>
+
+											<div class="col-md-6 sm-6 col-lg-6 col-xs-12">
+												<h3>{{policyStateBarChartLabelTitle || 'Bar Chart'}}</h3>
+												<canvas id="base" class="chart-bar"
+													chart-data="recommendationPolicyStateBarData"
+													chart-labels="recommendationPolicyStateBarLabels"
+													chart-colors="colors"
+													chart-dataset-override="recommendationPolicyBarDatatasetOverride"
+													width="400" height="250">
+											</canvas>
+											</div>
+											<!-- <canvas id="pie" class="chart chart-pie ng-isolate-scope" chart-data="phosphorusDataCleaningList.PIE_CHART_VALUES" chart-labels="phosphorusDataCleaningList.PIE_CHART_TITLES" chart-options="dataCleaningOptions" width="576" height="216" style="display: block; width: 576px; height: 216px;">
+												</canvas> -->
+											<hr style="width: 100%; border: 1px solid;">
+
+											<div class="col-md-6 sm-6 col-lg-6 col-xs-12">
+												<h3>{{policyPieChartLabelTitle || 'Pie Chart'}}</h3>
+												<!-- <canvas id="pie" class="chart chart-pie"
+												  chart-data="recommendationPieDetails" chart-labels="recommendationPieLabels" chart-options="recommendationPieOptions" width="400" height="150">
+											</canvas> -->
+												<canvas id="pie1" class="chart chart-pie"
+													chart-data="recommendationPolicyPieChartData"
+													chart-labels="recommendationPolicyPieChartLabels"
+													chart-options="recommendationPolicyPieChartOptions"
+													legend="recommendationPolicyPieChartLabels" width="400"
+													height="150">
+											</canvas>
+											</div>
+											<div class="col-md-6 sm-6 col-lg-6 col-xs-12">
+												<h3>{{statePieChartLabelTitle || 'Pie Chart'}}</h3>
+												<canvas id="pie2" class="chart chart-pie"
+													chart-data="recommendationStatePieChartData"
+													chart-labels="recommendationStatePieChartLabels"
+													chart-options="recommendationStatePieChartOptions"
+													width="400" height="150">
+											</canvas>
+											</div>
+											<hr style="width: 100%; border: 1px solid;">
+
+											<div class="col-md-6 sm-6 col-lg-6 col-xs-12"
+												style="max-height: 315px; overflow: scroll; overflow-x: hidden;">
+												<h3>{{recommendationSurveyGridLabel ||'Grid Data'}}</h3>
+												<div class="card-box table-responsive"
+													style="margin: 20px 0px;">
+													<table id="datatable"
+														class="table table-striped table-bordered"
+														style="text-align: center;">
+														<thead>
+															<tr>
+																<th rowspan="1" style="text-align: center;">Title</th>
+																<th rowspan="1" style="text-align: center;">Scores
+																	(in %)</th>
+															</tr>
+
+														</thead>
+														<tbody>
+															<tr
+																dir-paginate="data in surveyGridTitlesList | itemsPerPage: attendanceItemPerPageCount"
+																current-page="attendanceCurrentPage"
+																total-items="totalAttendanceCount"
+																class="cursor-pointer" pagination-id="attendance">
+																<td>{{data}}</td>
+																<td ng-if="data == 'Average Income'">${{surveyGridValuesList[$index]}}</td>
+																<td ng-if="data != 'Average Income'">{{surveyGridValuesList[$index]}}</td>
+															</tr>
+														</tbody>
+													</table>
+													<dir-pagination-controls pagination-id="attendance"
+														boundary-links="true" data-ng-if="!isSearchClick"
+														direction-links="true"
+														on-page-change="getAttendaceReportDetails(newPageNumber,'onSearch')"
+														template-url="template/dirPagination.tpl.html"></dir-pagination-controls>
+												</div>
+											</div>
+											<div class="col-md-6 sm-6 col-lg-6 col-xs-12">
+												<h3>Recommendation by Machine Learning</h3>
+												<ul
+													style="font-family: -webkit-pictograph; font-variant: common-ligatures;">
+													<li class="recommendationByMachineLeaning"
+														ng-repeat="data in recommendationByMachineLeaning"><span
+														class="recommendationBulletStyles"></span>{{data}}</li>
+												</ul>
+											</div>
+										</div>
+
+										<div class="nav clearfix" style="display: inline-flex;">
+											<div id="prev" style="padding-right: 480px;">
+												<a
+													class="prev btn btn-primary btn-rounded disableRecommAnchor"
+													ng-click="currentRecommendationStep('prev')">Previous</a>
+											</div>
+											<div id="nxt" style="padding-left: 505px;">
+												<a
+													class="next pull-right btn btn-primary btn-rounded disableRecommAnchor"
+													ng-click="currentRecommendationStep('next')">Next</a>
+											</div>
+											<div
+												ng-if="recommendationCurrentStep == 'recommendationResult'"
+												id="finish" style="padding-left: 505px;">
+												<a
+													class="next pull-right btn btn-primary btn-rounded disableRecommFinishAnchor"
+													ng-click="gotoDashboard()">Finish</a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<footer class="footer text-right">
+			<div class="container">
+				<div class="row">
+					<div class="col-xs-12">2018 © MLP</div>
+				</div>
+			</div>
+		</footer>
+
+	</div>
+	<!-- container -->
+</div>
+<!-- wrapper -->
+
+
+
+<script>
+          jQuery( document ).ready(function() {
+      		
+      		var back =jQuery(".prev");
+      		var	next = jQuery(".next");
+      		var	steps = jQuery(".step");
+      		
+      		next.bind("click", function() { 
+      			jQuery.each( steps, function( i ) {
+      				if (!jQuery(steps[i]).hasClass('current') && !jQuery(steps[i]).hasClass('done')) {
+      					jQuery(steps[i]).addClass('current');
+      					jQuery(steps[i - 1]).removeClass('current').addClass('done');
+      					return false;
+      				}
+      			})		
+      		});
+      		back.bind("click", function() { 
+      			jQuery.each( steps, function( i ) {
+      				if (jQuery(steps[i]).hasClass('done') && jQuery(steps[i + 1]).hasClass('current')) {
+      					jQuery(steps[i + 1]).removeClass('current');
+      					jQuery(steps[i]).removeClass('done').addClass('current');
+      					return false;
+      				}
+      			})		
+      		});
+
+      	})
+   	</script>

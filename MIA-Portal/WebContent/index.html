@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html ng-app="mlaApp">
+    <head ng-controller="mainCtrl">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="A fully featured machine learning product to analyze or recommend by uploading csv data."> 
+        <meta name="author" content="MLP">
+
+        <!-- App Favicon -->
+        <link rel="shortcut icon" href="assets/images/favicon.png">
+
+        <!-- App title -->
+        <title>Machine Learning Analysis</title>
+		<!-- main css -->
+		<link href="assets/css/main.css" rel="stylesheet" type="text/css" />
+		
+		
+       <!--  Morris Chart CSS -->
+		<!-- <link rel="stylesheet" href="assets/plugins/morris/morris.css">
+ -->
+        <!-- Switchery css -->
+        <link href="assets/plugins/switchery/switchery.min.css" rel="stylesheet" />
+
+		<!-- Jquery filer css -->
+        <link href="assets/plugins/jquery.filer/css/jquery.filer.css" rel="stylesheet" />
+        <link href="assets/plugins/jquery.filer/css/themes/jquery.filer-dragdropbox-theme.css" rel="stylesheet" />
+        
+        <!-- App CSS -->
+        <link href="assets/css/style.css" rel="stylesheet" type="text/css" />
+        
+        <!-- Loading messages -->
+        <link href="assets/css/loading-bar.css" rel="stylesheet" type="text/css" />
+        
+        <!-- image crop and upload -->
+        <link href="assets/css/imgCropUpload/ng-img-crop.css" rel="stylesheet" type="text/css" />
+        <link href="assets/css/imgCropUpload/style.css" rel="stylesheet" type="text/css" />
+        
+		<link rel="stylesheet" href="assets/css/jquery-ui.css">
+		
+		<!-- Date time picker -->
+		<link href="assets/css/dateTimePicker/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css" />
+		
+		<!-- For checkbox in select option -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="assets/css/bootstrap-multiselect.css">
+<!-- 		<link href="js/vendor/bootstrap-3.3.2.min.css" type="text/css" /> -->
+		
+		<!-- ngTable css -->
+		<link rel="stylesheet" href="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.css">
+		
+		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+		
+		
+		
+		<!--Tablesaw JS-->
+		 
+		
+        <!-- Js files load start from here -->        
+        <!-- jQuery  -->
+		<script src="assets/js/jquery.min.js"></script>
+		<script src="js/vendor/jquery-ui.js"></script>
+        <script src="assets/js/tether.min.js"></script><!-- Tether for Bootstrap -->
+        <script src="assets/js/bootstrap.min.js"></script>
+        <script src="assets/js/waves.js"></script>
+        <script src="assets/js/jquery.nicescroll.js"></script>
+        <script src="assets/plugins/switchery/switchery.min.js"></script>
+		
+		<!-- Websocket js file -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+		
+		<!-- jQuery  -->
+        <script src="assets/js/tether.min.js"></script><!-- Tether for Bootstrap -->
+        <script src="assets/js/waves.js"></script>
+        <script src="assets/js/jquery.nicescroll.js"></script>
+
+        <!-- Jquery filer js -->
+        <script src="assets/plugins/jquery.filer/js/jquery.filer.min.js"></script>
+
+        <!-- App js -->
+        <script src="assets/js/jquery.core.js"></script>
+        <script src="assets/js/jquery.app.js"></script>
+
+        <!-- page specific js -->
+        <script src="assets/pages/jquery.fileuploads.init.js"></script>
+        
+      <!--   Morris Chart -->
+		<!-- <script src="assets/plugins/morris/morris.js"></script>
+		<script src="assets/plugins/raphael/raphael-min.js"></script> -->
+
+        <!-- Counter Up  -->
+        <script src="assets/plugins/waypoints/lib/jquery.waypoints.js"></script>
+        <script src="assets/plugins/counterup/jquery.counterup.min.js"></script>
+
+        <!-- App js -->
+        <script src="assets/js/jquery.core.js"></script>
+        <script src="assets/js/jquery.app.js"></script>
+
+        <!-- Page specific js -->
+        <script src="assets/pages/jquery.dashboard.js"></script>
+        <!-- To scroll zoom in and zoom out image map -->
+		<script src="js/vendor/jquery.panzoom.js"></script>
+		
+        <!-- Toastr message -->
+        <link href="assets/css/toastr/toastr.min.css" rel="stylesheet" type="text/css" />
+        
+        <script src="assets/js/modernizr.min.js"></script>
+        
+        <!-- Toastr message -->
+        <script src="js/vendor/toastr/toastr.min.js"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.1/angular.min.js"></script>
+        <script src="js/vendor/angular/angular-ui-router.js"></script>
+        
+        <script src="js/vendor/dialogs.min.js"></script>
+        <script src="js/vendor/loading-bar.min.js"></script>
+        <script src="js/vendor/ngStorage.min.js"></script>
+        <script src="js/vendor/ui-bootstrap-tpls.js"></script>
+         
+        <!-- Password Encryption  -->
+		<script src="js/vendor/angular-md5.js"></script>
+		
+		<!-- chart js file -->
+		<script src="js/vendor/chart/Chart.js"></script>
+		<script src="js/vendor/chart/angular-chart.js"></script>
+		
+		<!-- Heatmap -->
+		<script src="js/vendor/heatmap.min.js"></script>
+		
+		<!-- date and time picker -->
+		<script src="js/vendor/dateTimePicker/moment.js"></script>
+		<script src="js/vendor/dateTimePicker/bootstrap-datetimepicker.js"></script>
+		
+		<!-- high Chart -->
+		<script src="http://code.highcharts.com/highcharts.js"></script>
+		<script src="http://code.highcharts.com/modules/heatmap.js"></script>
+		<script src="http://code.highcharts.com/modules/exporting.js"></script>
+		
+		<!-- heatmap chart -->
+		<script src="js/vendor/heatmapChart/Chart.HeatMap.S.js"></script>
+		<script src="js/vendor/heatmapChart/Chart.HeatMap.js"></script>
+		
+		<!-- Checkbox selection in select option -->
+		<script src="js/vendor/lodash.js"></script>
+		<script src="js/vendor/angularjs-dropdown-multiselect.js"></script>
+		<script src="assets/js/bootstrap-multiselect.js"></script>
+<!-- 		<script src="js/vendor/bootstrap-3.3.2.min.js"></script> -->
+		
+		<!-- ngTable js -->
+		<script src="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.js"></script>
+		
+        <!-- config files -->
+        <script src="js/config/app.js"></script>
+        <script src="js/config/config.js"></script>
+        
+        <!-- Services files -->
+        <script src="js/config/config-router.js"></script>
+        <script src="js/constant/constant.js"></script>
+        
+        <script src="js/services/services.js"></script>
+        
+        <!-- Directives -->
+        <script src="js/vendor/directive/angular-zoom-directive.js"></script>
+        <script src="js/directive/draggable.js"></script>
+        <script src="js/directive/uploadCSV.js"></script>
+        <script src="js/directive/imgFileUploadDirective.js"></script>
+        <!-- Pagination -->
+		<script src="js/vendor/directive/dirPagination.js"></script>
+		
+        <!-- Controllers -->
+		<script src="js/controller/mainCtrl.js"></script>
+		<script src="js/controller/loginCtrl.js"></script>
+		<script src="js/controller/resetPasswordCtrl.js"></script>
+		<script src="js/controller/dashboardCtrl.js"></script>
+		<script src="js/controller/phosphorusCtrl.js"></script>
+		<script src="js/controller/anomalyCtrl.js"></script>
+		<script src="js/controller/recommendationCtrl.js"></script>
+		
+		
+		
+    </head>
+
+    <body>
+
+		<div ui-view></div>
+		
+    </body>
+</html>
