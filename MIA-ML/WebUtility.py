@@ -7,6 +7,7 @@ import json
 import os
 import sklearn
 import mritopng
+import base64
 
 from flask import Flask, flash, request, redirect, url_for, render_template, session, escape, abort, send_file
 from flask_cors import CORS, cross_origin
@@ -284,7 +285,10 @@ def cleanedPhosphorusData():
         pass
     # Convert the MRI file to PNG file
     mritopng.convert_file(sourceImage, destImage)
-    return send_file(destImage, mimetype='image/png')
+    #return send_file(destImage, mimetype='image/png')
+    with open(destImage, "rb") as image:
+        encoded_string = base64.b64encode(image.read())
+    return encoded_string
 
 
 @app.route('/showFiles')

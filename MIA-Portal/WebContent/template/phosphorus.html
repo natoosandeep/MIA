@@ -265,10 +265,10 @@ rotate
 							<div class="col-md-1 col-sm-1"></div>
 							<div class="step current col-md-2 col-sm-2 col-xs-12"
 								id="uploadCSV">
-								<span> Upload Image </span>
+								<span> Upload MRI Image </span>
 							</div>
 							<div class="step col-md-3 col-sm-3 col-xs-12" id="dataCleaning">
-								<span> Input Image Analysis </span>
+								<span> Input Image Preview </span>
 							</div>
 							<div class="step col-md-3 col-sm-3 col-xs-12" id="applyingModel">
 								<span> Applying Model </span>
@@ -315,9 +315,8 @@ rotate
 									take some time. </span>
 							</div>
 							<div ng-if="phosphorusDataCleaningList" class="row">
-								<img ng-src="data:image/JPEG;base64,{{myImage}}"/>
-								<img ng-src="data:image/png;base64,{{myImage}}" id="photo-id"/>
-								<img ng-src="{{myImage}}" />
+								<img ng-src="data:image/JPEG;base64,{{myImage}}" class="col-md-6 sm-6 col-lg-10 col-xs-10"/>
+															
 								<!--  
 								<div class="col-md-6 sm-6 col-lg-6 col-xs-12">
 									<h5 style="margin: 10px;">
