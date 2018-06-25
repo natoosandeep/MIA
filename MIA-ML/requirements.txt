@@ -114,3 +114,7 @@ widgetsnbextension==3.1.4
 win-inet-pton==1.0.1
 wincertstore==0.2
 xgboost==0.71
+mritopng==2.1
+pydicom==1.1.0
+pypng==0.0.18
+dicom==0.9.9.post1

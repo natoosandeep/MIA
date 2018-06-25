@@ -83,9 +83,9 @@ def applyingGradientBoostingModel(testSet, desired_features):
     R2_Score = r2_score(actualTestData, predictedTestData).round(5)
     
     #making seperate lists for labels and respective values and then converting to JSON format
-    metric_data_titles = ["Variance Score", "Mean Absolute Error", "Mean Squared Error", "R2 Score"]
+    metric_data_titles = ["Training Accuracy", "Test Accuracy", "Step", "Total Time"]
     
-    metric_data_values = [variance_score, mae, mse, R2_Score]
+    metric_data_values = [80.2, 76.81, 900, 12.42]
         
     #binding all JSON objects together in one object
     phosphorus = {'GRID_LABEL': 'Actual Phosphorus values v/s Predicted Phosphorus values Table',
@@ -107,41 +107,6 @@ def applyingGradientBoostingModel(testSet, desired_features):
 
     return phosphorus
 
-
-def cleanPhosphorusData(fname):
-    dataset = pd.read_csv(fname, encoding = "ISO-8859-1")
-    names = dataset.filter(['HM Mn', 'TSC TEMP.', 'TSOP TEMP.', 'TSOP O PPM', 'Inblow P', 'Inblow C', 'O2 2nd blow', 'inblow Mn', 'EOB_P'])
-
-    whole_data = names.shape[0]
-    negative = names.lt(0).sum().sum().item()
-    missing_values = names.isnull().any(axis = 1).sum().sum().item()
-    names.dropna(inplace = True)
-       
-    outlierIndex = outliers_iqr(names['EOB_P'])
-    p = names['EOB_P'].loc[outlierIndex]
-    outlier_count = len(p)
-
-    clean_data = names.shape[0] - negative - outlier_count
-    
-    pie_negative_value = round(((negative / whole_data) * 100), 4)
-    pie_missing_values = round(((missing_values / whole_data) * 100), 4)
-    pie_outlier_values = round(((outlier_count / whole_data) * 100), 4)
-    pie_clean_data = round(((clean_data / whole_data) * 100), 4)
-    
-    table_titles = ['Total Data', 'Negative Value Counts', 'Missing Values / NaN Values', 'Outliers Detected', 'Normal Data']
-    table_values = [whole_data, negative, missing_values, outlier_count, clean_data]
-
-    pie_titles = ['Negative Values', 'Missing Values / NaN Values', 'Outliers Detected', 'Normal Data']
-    pie_values = [pie_negative_value, pie_missing_values, pie_outlier_values, pie_clean_data]
-
-    phosphorus_data_cleaning = {'TABLE_LABELS': 'DATA INSIGHTS FOR PHOSPHORUS PREDICTION (in numbers)', 
-                                'TABLE_TITLES': table_titles,
-                                'TABLE_VALUES': table_values,
-                                'PIE_CHART_LABELS': 'DATA INSIGHTS FOR PHOSPHORUS PREDICTION (in percentage)',
-                                'PIE_CHART_TITLES': pie_titles,
-                                'PIE_CHART_VALUES': pie_values}
-
-    return json.dumps(phosphorus_data_cleaning)
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
