@@ -29,7 +29,7 @@ from sklearn.ensemble import IsolationForest
 
 # Global Declarations
 app = Flask(__name__)
-ALLOWED_EXTENSIONS = set(['jpeg', 'jpg', 'png', 'dcm', 'DICOM'])
+ALLOWED_EXTENSIONS = set(['png', 'dcm'])
 APP_ROOT = os.path.dirname(os.path.abspath(__name__))
 app.secret_key = 'secret'
 cors = CORS(app, resources={r'/*': {"origins": '*'}})
@@ -185,8 +185,10 @@ def upload_file():
             if current_page == '': #Blank
                 return 'There might be some issue while uploading, please check all the valid parameter(s)'
             elif current_page == PAGE_REGRESSION: #PhosphorusRegression
-                app.config['UPLOAD_FOLDER'] = os.path.join(APP_ROOT, 'uploads', 'mri', 'Test.dcm')
-            
+                if filename.lower().endswith(('.png')):
+                    app.config['UPLOAD_FOLDER'] = os.path.join(APP_ROOT, 'uploads', 'converted', 'Upload_MRI.png')
+                elif filename.lower().endswith(('.dcm')):
+                    app.config['UPLOAD_FOLDER'] = os.path.join(APP_ROOT, 'uploads', 'mri', 'Upload_MRI.dcm')
             # Save the file
             file.save(app.config['UPLOAD_FOLDER'])
             return 'file uploaded successfully'
@@ -242,17 +244,37 @@ def phosphorusPrediction():
 
 @app.route('/phosphorusDataCleaning')
 def cleanedPhosphorusData():
-    sourceImage = os.path.join(APP_ROOT, 'uploads', 'mri', 'Test.dcm')
-    destImage = os.path.join(APP_ROOT, 'uploads', 'converted', 'Test.png')
+    default_png = os.path.join(APP_ROOT, 'uploads', 'converted', 'Default_MRI.png')
+    upload_png = os.path.join(APP_ROOT, 'uploads', 'converted', 'Upload_MRI.png')
+    upload_dcm = os.path.join(APP_ROOT, 'uploads', 'mri', 'Upload_MRI.dcm')
+    return_image = default_png
+    
+    # Check whether the upload MRI file exist
+    if os.path.isfile(upload_dcm):
+        try:
+            if os.path.isfile(upload_png):
+                os.remove(upload_png)
+            # Convert the MRI file to PNG file
+            mritopng.convert_file(upload_dcm, upload_png)
+            return_image = upload_png
+        except OSError:
+            pass
+    elif os.path.isfile(upload_png):
+        return_image = upload_png
+    # Convert the image
+    with open(return_image, "rb") as image:
+        encoded_string = base64.b64encode(image.read())
+    
+    # Remove all existed uploads
     try:
-        os.remove(destImage)
+        if os.path.isfile(upload_png):
+            os.remove(upload_png)
+        if os.path.isfile(upload_dcm):
+            os.remove(upload_dcm)
     except OSError:
         pass
-    # Convert the MRI file to PNG file
-    mritopng.convert_file(sourceImage, destImage)
-    #return send_file(destImage, mimetype='image/png')
-    with open(destImage, "rb") as image:
-        encoded_string = base64.b64encode(image.read())
+    
+    #return send_file(return_image, mimetype='image/png')
     return encoded_string
 
 

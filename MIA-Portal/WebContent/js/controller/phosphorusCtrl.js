@@ -479,7 +479,7 @@ window.mlaApp.controller(
 								}
 								var extn = csvFileName.split(".").pop();
 								console.log(extn);
-								if(extn == "dcm" || extn == "DCM" ){
+								if(extn == "dcm" || extn == "DCM" || extn == "png" || extn == "PNG"){
 									
 									/**
 									 * Do nothing
