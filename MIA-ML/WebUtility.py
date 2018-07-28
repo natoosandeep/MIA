@@ -1,11 +1,7 @@
 
 import pandas as pd
-import numpy as np
-import re
-import csv
 import json
 import os
-import sklearn
 import mritopng
 import base64
 
@@ -250,29 +246,28 @@ def cleanedPhosphorusData():
     return_image = default_png
     
     # Check whether the upload MRI file exist
-    if os.path.isfile(upload_dcm):
-        try:
+    try:
+        if os.path.isfile(upload_dcm):
             if os.path.isfile(upload_png):
                 os.remove(upload_png)
             # Convert the MRI file to PNG file
             mritopng.convert_file(upload_dcm, upload_png)
             return_image = upload_png
-        except OSError:
-            pass
-    elif os.path.isfile(upload_png):
-        return_image = upload_png
-    # Convert the image
-    with open(return_image, "rb") as image:
-        encoded_string = base64.b64encode(image.read())
-    
-    # Remove all existed uploads
-    try:
+
+        elif os.path.isfile(upload_png):
+            return_image = upload_png
+
+        # Convert the image
+        with open(return_image, "rb") as image:
+            encoded_string = base64.b64encode(image.read())
+
+        # Remove all existed uploads
         if os.path.isfile(upload_png):
             os.remove(upload_png)
         if os.path.isfile(upload_dcm):
             os.remove(upload_dcm)
-    except OSError:
-        pass
+    except Exception as exception:
+        os.write(str(exception))
     
     #return send_file(return_image, mimetype='image/png')
     return encoded_string

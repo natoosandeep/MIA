@@ -54,6 +54,6 @@ window.mlaApp.constant(
 					BEACON_MAJOR_MINOR_SEARCH : "Please enter valid number.!",
 					CHOOSE_FILE : "Please choose file.",
 					CHOOSE_FILE_EMPTY : "Selected file should not be blank.!",
-				    INVALIED_FILE_EXTENTION : "Select only .dcm / .jpg / .png file, Your selected file extention is like ."
+				    INVALIED_FILE_EXTENTION : "Select only .dcm / .png file, Your selected file extension is like ."
 					
 				})
