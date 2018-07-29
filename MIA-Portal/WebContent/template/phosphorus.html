@@ -369,10 +369,19 @@ rotate
 								</span>
 							</div>
 						</div>
-<!--  
+						
+  
 						<div class="anomalyFilter"
 							ng-if="phosphorusCurrentStep == 'phosphorusResult'"
 							style="margin: 10px;">
+							<div class="anomaly-chart-container">
+								<h4 class="ta_center">Object Comparison Match</h4>
+								<canvas class="chart chart-bar" chart-data="barchart_data"
+									chart-labels="barchart_label" chart-options="options"
+									chart-series="series" chart-colors="colors" width="400"
+									height="150"></canvas>
+							</div>
+							<!--
 							<p style="display: -webkit-inline-box; margin: 0px 10px;">
 								Total records: <strong>{{phosphorusListDetails.Actual_Values_JSON_LINE_CHART_10.length}}</strong>
 							</p>
@@ -387,8 +396,9 @@ rotate
 							<button class="btn btn-info"
 								ng-click="phosphorusLineBarChartFilter(startCount,endCount)">Show
 								Results</button>
+						-->
 						</div>
--->
+
 						<div class="row"
 							>
 							<div ng-repeat="value in phosphorusCardDetails.values"

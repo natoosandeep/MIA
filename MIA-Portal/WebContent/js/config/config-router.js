@@ -25,7 +25,7 @@ window.mlaApp.config([ '$stateProvider', '$urlRouterProvider',
 				templateUrl : 'template/popup/logout.html',
 				controller : 'mainCtrl'
 			}).state('phosphorus', {
-				url : '/phosphorus',
+				url : '/img_analysis',
 				templateUrl : 'template/phosphorus.html',
 				controller : 'phosphorusCtrl'
 			}).state('anomaly', {

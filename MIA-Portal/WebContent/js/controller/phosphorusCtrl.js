@@ -60,8 +60,8 @@ window.mlaApp.controller(
 							
 							$scope.currentPhosphorusStep = function(navType){
 								if($('#uploadCSV').hasClass("current")){
-									$(".disablePhosphorusAnchorSkip").attr("disabled",false);
-									$(".disablePhosphorusAnchorSkip").css("display","initial");
+									$(".btn-info").attr("disabled",false);
+									$(".btn-info").css("display","initial");
 									$(".disablePhosphorusAnchor").attr("disabled",true);
 									$(".disablePhosphorusAnchor").css("pointer-events","none");
 									$scope.phosphorusCurrentStep = 'uploadCSV';
@@ -266,6 +266,14 @@ window.mlaApp.controller(
 													 
 													$rootScope.loggingMessages("*Response Get phosphorus grid list , phosphorusCtrl*",data,status);
 													if(data){
+														//-- Adding dummy data 
+														$rootScope.barchart_label = ['Object-1', 'Object-2', 'Object-3', 'Object-4', 'Object-5', 'Object-6', 'Object-7'];
+														$rootScope.barchart_data = [
+														                            [30, 10, 43, 18, 2, 100, 66],
+														                            [30, 10, 43, 18, 2, 100, 66],
+														                            
+														                            ];
+														
 														$rootScope.phosphorusListDetails = data;
 														/***********************
 														 * Phosphorus Line chart
@@ -505,6 +513,8 @@ window.mlaApp.controller(
 													MLA_CONSTANT.TOASTR.success(MLA_CONSTANT_MESSAGES.CSV_FILE_UPLOAD_SUCCESS);
 													$(".disablePhosphorusAnchor").attr("disabled",false);
 													$(".disablePhosphorusAnchor").css("pointer-events","initial");
+													$(".btn-info").attr("disabled",true);
+													//$(".disablePhosphorusAnchorSkip").attr("disabled",true);
 													window.csvFileName = undefined;
 													window.fileObject = undefined;
 													$rootScope.cancel();
