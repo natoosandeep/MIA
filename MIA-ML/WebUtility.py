@@ -19,6 +19,8 @@ from sklearn.metrics import mean_absolute_error
 from sklearn.metrics import mean_squared_error
 from sklearn.metrics import r2_score
 from sklearn.externals import joblib
+import logging
+from logging.handlers import RotatingFileHandler
 
 from sklearn import preprocessing
 from sklearn.ensemble import IsolationForest
@@ -244,15 +246,19 @@ def cleanedPhosphorusData():
     upload_png = os.path.join(APP_ROOT, 'uploads', 'converted', 'Upload_MRI.png')
     upload_dcm = os.path.join(APP_ROOT, 'uploads', 'mri', 'Upload_MRI.dcm')
     return_image = default_png
+    encoded_string = "Error while image encoding"
     
     # Check whether the upload MRI file exist
     try:
         if os.path.isfile(upload_dcm):
             if os.path.isfile(upload_png):
                 os.remove(upload_png)
-            # Convert the MRI file to PNG file
-            mritopng.convert_file(upload_dcm, upload_png)
-            return_image = upload_png
+            try:
+                # Convert the MRI file to PNG file
+                mritopng.convert_file(upload_dcm, upload_png)
+                return_image = upload_png
+            except Exception as exp:
+                app.logger.error(str(exp))
 
         elif os.path.isfile(upload_png):
             return_image = upload_png
@@ -267,7 +273,7 @@ def cleanedPhosphorusData():
         if os.path.isfile(upload_dcm):
             os.remove(upload_dcm)
     except Exception as exception:
-        os.write(str(exception))
+        app.logger.error(str(exception))
     
     #return send_file(return_image, mimetype='image/png')
     return encoded_string
@@ -280,6 +286,13 @@ def showFiles():
     return onlyfiles
 
 if __name__ == '__main__':
+    # Configure logger details
+    formatter = logging.Formatter("[%(asctime)s] {%(pathname)s:%(lineno)d} %(levelname)s - %(message)s")
+    handler = RotatingFileHandler('logs/MIA.log', maxBytes=1000000, backupCount=1)  # 1MB
+    handler.setLevel(logging.DEBUG)
+    handler.setFormatter(formatter)
+    app.logger.addHandler(handler)
+
     port = int(os.environ.get('PORT', 5050))
     app.run(host='0.0.0.0', port=port, debug=True, use_reloader=True)
 
