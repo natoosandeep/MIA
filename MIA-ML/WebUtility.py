@@ -194,12 +194,12 @@ def upload_file():
 
 @app.route('/dashboard')
 def dashboard():
-    blog_link = ['http://mindbowser.com/machine-learning-future-in-finance/', 'http://mindbowser.com/supply-chain-and-logistics/', 'http://mindbowser.com/solve-agricultural-problems-using-machine-learning/', 'http://mindbowser.com/wonders-machine-learning-can-do-for-industries/']
-    blog_header = ['The future of Machine Learning in Finance', 'Machine learning - A giant Leap in Supply chain and Logistics', 'Challenges faced in agriculture and how machine learning can be applied', 'Wonders Machine Learning can do for Industries']
+    blog_link = ['https://arxiv.org/abs/1702.03407', 'https://www.kdnuggets.com/2017/03/medical-image-analysis-deep-learning.html', 'https://www.allerin.com/blog/top-5-applications-of-deep-learning-in-healthcare', 'https://www.nvidia.com/en-us/deep-learning-ai/industries/healthcare/']
+    blog_header = ['Predicting Segmentation Performance', 'Medical Image Analysis with Deep Learning', 'Applications of Deep Learning in healthcare', 'Deep Learning for healthcare']
     blog_image = ['D:/ml-backend/images/business-chart-1.jpg', 'D:/ml-backend/images/boats-cargo-container.jpg', 'D:/ml-backend/images/pexels-photo-616020.jpeg', 'D:/ml-backend/images/ML-1.png']
     workflow_image = ['D:/ml-backend/images/Machine-Leaning-Workflow-v-3.png']
-    news_link = ['http://news.mit.edu/2018/revolutionizing-everyday-products-with-artificial-intelligence-mit-meche-0601', 'http://news.mit.edu/2018/applying-machine-learning-to-challenges-in-pharmaceutical-industry-0517', 'http://news.mit.edu/2018/ml-20-machine-learning-many-data-science-0306']
-    news_header = ['Revolutionizing everyday products with artificial intelligence', 'Applying machine learning to challenges in the pharmaceutical industry', 'Machine learning for many']
+    news_link = ['https://www.analyticsindiamag.com/nurses-and-ai-working-together-in-healthcare-is-the-dawn-of-life-changing-automation/', 'https://www.healthdatamanagement.com/news/university-of-california-irvine-launches-ai-center-for-healthcare', 'https://www.pulseitmagazine.com.au/news/movers-and-shakers/4512-ranzcr-to-hold-ai-in-healthcare-summit']
+    news_header = ['Nurses And AI Working Together In Healthcare Is The Dawn Of Life ...', 'University of California Irvine launches AI center for healthcare', 'RANZCR to hold AI in healthcare summit']
 
     df_blog = pd.DataFrame({
                                     'link': blog_link,

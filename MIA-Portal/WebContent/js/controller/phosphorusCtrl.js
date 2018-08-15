@@ -87,8 +87,8 @@ window.mlaApp.controller(
 										$rootScope.getPhosphorusGridList();
 									}
 									else{
-										$(".disablePhosphorusAnchor").attr("disabled",true);
-										$(".disablePhosphorusAnchor").css("pointer-events","none");
+										$(".prev").attr("disabled",true);
+										$(".prev").css("pointer-events","none");
 										MLA_CONSTANT.TOASTR.remove();
 										MLA_CONSTANT.TOASTR.error("Model already created");
 										return;
@@ -267,7 +267,7 @@ window.mlaApp.controller(
 													$rootScope.loggingMessages("*Response Get phosphorus grid list , phosphorusCtrl*",data,status);
 													if(data){
 														//-- Adding dummy data 
-														$rootScope.barchart_label = ['Object-1', 'Object-2', 'Object-3', 'Object-4', 'Object-5', 'Object-6', 'Object-7'];
+														$rootScope.barchart_label = ['GT-1', 'GT-2', 'GT-3', 'GT-4', 'GT-5', 'GT-6', 'GT-7'];
 														$rootScope.barchart_data = [
 														                            [30, 10, 43, 18, 2, 100, 66],
 														                            [30, 10, 43, 18, 2, 100, 66],

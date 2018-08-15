@@ -22629,9 +22629,8 @@ div.hopscotch-bubble .hopscotch-bubble-arrow-container.down .hopscotch-bubble-ar
     font-variant: common-ligatures;
 }
 .blog-in-css{
-	font-size: 15px; 
-	font-size: 22px;
-	font-family: serif;
+	font-size: 18px;
+	font-family: 'Arimo', serif;
 	color: blue;
 	
 }

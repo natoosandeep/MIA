@@ -27,63 +27,39 @@
 									  chart-data="attendanceData" chart-labels="attendanceLabel" chart-series="attendanceSeries" chart-options="attendanceOptions">
 									</canvas>
                             </div>
-					<div class="w3-content w3-section" style="max-width: 900px">
+					<div class="w3-content w3-section" style="max-height: 390px;max-width: 900px">
 						
 
-						<img class="mySlides w3-animate-fading" src="assets/images/dashboard_img/a.jpg"
+						<img class="mySlides w3-animate-fading" src="assets/images/dashboard_img/a.png"
 							style="width: 100%"> <img
 							class="mySlides w3-animate-fading" src="assets/images/dashboard_img/b.png"
 							style="width: 100%"> <img
-							class="mySlides w3-animate-fading" src="assets/images/dashboard_img/d.jpg"
+							class="mySlides w3-animate-fading" src="assets/images/dashboard_img/c.png"
+							style="width: 100%"><img
+							class="mySlides w3-animate-fading" src="assets/images/dashboard_img/d.png"
 							style="width: 100%">
 					</div>
 
 				</div>
                     </div><!-- end col-->
 
-                    <div class="col-xs-12 col-lg-12 col-xl-4" ng-init="getDashBoardData()">
-                        <div class="card-box" style="max-height: 424px; overflow: scroll;">
-							<h3 class="blog-title"> Blogs </h3>
+                    <div class="col-xs-12 col-lg-12 col-xl-4" >
+                        <div class="card-box" style="max-height: 224px; overflow: scroll;" ng-init="getDashBoardData()">
+							<h4 class="blog-title"> Blogs </h4>
 							
 								<div ng-repeat="blog in dashBoardData.Blog">
 												<div class="card-box">  
 													<h2 class="" data-plugin="counterup">
 														<p><a  class="blog-in-css" href={{dashBoardData.Blog[$index].link}}>{{dashBoardData.Blog[$index].header}}</a></p>
-														<img src="{{dashBoardData.Blog[$index].image}}">
+														
 													</h2>
 												</div>
 											</div>
 
                         </div>
-                    </div><!-- end col-->
+                        <div class="card-box" style="max-height: 200px; overflow: scroll;" ng-init="getDashboardSpaceUtilizationReport()">
 
-
-                </div>
-                <!-- end row 1-->
-                
-                
-                <div class="row">
-                    <div class="col-xs-12 col-lg-12 col-xl-8">
-                        <div class="card-box">
-
-                            <h4 class="header-title m-t-0">Attendance</h4>
-
-                            <div ng-show="attendanceLabel">
-                            		<canvas id="bar" class="chart chart-bar"
-									  chart-data="attendanceData" chart-labels="attendanceLabel" chart-series="attendanceSeries" chart-options="attendanceOptions">
-									</canvas>
-                            </div>
-                             <div ng-show="!attendanceLabel"  style="height:382px;text-align:center;line-height: 21rem;">
-                             	<div style="line-height: 21rem;"><h4>No data at this moment.</h4></div>
-                            </div>
-
-                        </div>
-                    </div><!-- end col-->
-
-                    <div class="col-xs-12 col-lg-12 col-xl-4" ng-init="getDashboardSpaceUtilizationReport()">
-                        <div class="card-box" style="max-height: 424px; overflow: scroll;">
-
-                            <h3 class="blog-title">Recent News</h3>
+                            <h4 class="blog-title"> News</h4>
 							
                           <div ng-repeat="blog in dashBoardData.News">
 												<div class="card-box">  
@@ -95,16 +71,15 @@
 
                         </div>
                     </div><!-- end col-->
-
-
                 </div>
-                <!-- end row 2-->
+                <!-- end row 1-->
+                
 
                 <!-- Footer -->
                 <footer class="footer text-right">
                     <div class="container">
                         <div class="row">
-                            <div class="col-xs-12">2018 &#9400; MLP</div>
+                            <div class="col-xs-12">2018 &#9400; MIA</div>
                         </div>
                     </div>
                 </footer>
