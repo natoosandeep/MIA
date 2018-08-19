@@ -267,12 +267,8 @@ window.mlaApp.controller(
 													$rootScope.loggingMessages("*Response Get phosphorus grid list , phosphorusCtrl*",data,status);
 													if(data){
 														//-- Adding dummy data 
-														$rootScope.barchart_label = ['GT-1', 'GT-2', 'GT-3', 'GT-4', 'GT-5', 'GT-6', 'GT-7'];
-														$rootScope.barchart_data = [
-														                            [30, 10, 43, 18, 2, 100, 66],
-														                            [30, 10, 43, 18, 2, 100, 66],
-														                            
-														                            ];
+														$rootScope.barchart_label = data.Match_Comparison_Labels;
+														$rootScope.barchart_data = data.Match_Comparison_Values;
 														
 														$rootScope.phosphorusListDetails = data;
 														/***********************

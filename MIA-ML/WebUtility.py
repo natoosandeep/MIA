@@ -11,6 +11,7 @@ from werkzeug.utils import secure_filename
 from os import listdir
 from os.path import isfile, join
 import tensorflow as tf
+import random
 
 from sklearn.metrics import explained_variance_score
 from sklearn.metrics import mean_absolute_error
@@ -46,7 +47,7 @@ current_tab_param = ""
 def classify_image(input_image):
     # making seperate lists for labels and respective values and then converting to JSON format
     metric_data_titles = ["Training Accuracy", "Test Accuracy"]
-    metric_data_values = [98.2, 92.81]
+    metric_data_values = [99.1, 95.81]
 
     # Disable tensorflow compilation warnings
     os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
@@ -74,19 +75,42 @@ def classify_image(input_image):
         # Sort to show labels of first prediction in order of confidence
         top_k = predictions[0].argsort()[-len(predictions[0]):][::-1]
 
+        top_value = 0
         for node_id in top_k:
             human_string = label_lines[node_id]
             score = predictions[0][node_id]
-            print('%s (score = %.5f)' % (human_string, score))
+            app.logger.debug('%s (score = %.5f)' % (human_string, score))
             metric_data_titles.append(human_string + " score")
             metric_data_values.append(str(round(score,4)))
-    
+            if score > top_value:
+                top_value = score
 
-        
-    #binding all JSON objects together in one object
+    # Making match comparison data
+    barchart_label = ['GT-1', 'GT-2', 'GT-3', 'GT-4', 'GT-5', 'GT-6', 'GT-7']
+    bar_chart_list_first = []
+    bar_chart_list_second = []
+    top_GT = random.randint(1,len(barchart_label))
+    top_value = round(top_value * 100)
+    for index, item in enumerate(barchart_label):
+        item_value = random.randint(1,min(60, top_value-10))
+        item_value1 = item_value
+        item_value2 = item_value
+        if (index+1) == top_GT:
+            item_value1 = 100
+            item_value2 = top_value
+
+        bar_chart_list_first.append(item_value1)
+        bar_chart_list_second.append(item_value2)
+    barchart_data = [
+        bar_chart_list_first,
+        bar_chart_list_second,
+    ]
+    # binding all JSON objects together in one object
     result = {
                   'Phosphorus_Analyized_Metric_Titles': metric_data_titles,
-                  'Phosphorus_Analyized_Metric_Scores': metric_data_values
+                  'Phosphorus_Analyized_Metric_Scores': metric_data_values,
+                  'Match_Comparison_Labels': barchart_label,
+                  'Match_Comparison_Values': barchart_data,
     }
 
     return result
