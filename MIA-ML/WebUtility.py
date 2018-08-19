@@ -5,15 +5,13 @@ import os
 import mritopng
 import base64
 
-from flask import Flask, flash, request, redirect, url_for, render_template, session, escape, abort, send_file
-from flask_cors import CORS, cross_origin
+from flask import Flask, request, session, abort
+from flask_cors import CORS
 from werkzeug.utils import secure_filename
-from collections import Counter
 from os import listdir
 from os.path import isfile, join
+import tensorflow as tf
 
-from sklearn. ensemble import GradientBoostingRegressor
-from sklearn.metrics import mean_squared_error
 from sklearn.metrics import explained_variance_score
 from sklearn.metrics import mean_absolute_error
 from sklearn.metrics import mean_squared_error
@@ -22,8 +20,6 @@ from sklearn.externals import joblib
 import logging
 from logging.handlers import RotatingFileHandler
 
-from sklearn import preprocessing
-from sklearn.ensemble import IsolationForest
 
 # Global Declarations
 app = Flask(__name__)
@@ -44,66 +40,56 @@ current_tab_param = ""
 
 
 ##################
-#applyingGradientBoostingModel() is used to apply gradient boosting model on the data
-#It takes training and testing data as parameter and the expected features(columns) to consider from the data
-#Predicted values are generated on test data using the gradient boosting model created
+# This function loads the tensor flow model & predict the results based on the input given
 ##################
 
-def applyingGradientBoostingModel(testSet, desired_features):
-    ### Loading the model
-    gb_model = joblib.load("datasource/phosphorus_regression/PhosphorusRegessionModel.jbl")
-    
-    #filtering only the features required from the train and test data
-    testSet = testSet[(testSet['EOB_P'] < 0.1)]
-    test_gb_data = testSet[desired_features]
-    actualTestData = testSet['EOB_P'].tolist()
-    predictedTestData = gb_model.predict(test_gb_data)
-    predictedTestData = pd.Series(predictedTestData).tolist()
-    
-    
-    HM_Mn = testSet['HM_Mn'].tolist()
-    Inblow_P = testSet['Inblow_P'].tolist()
-    Inblow_C = testSet['Inblow_C'].tolist()
-    Inblow_Mn = testSet['Inblow_Mn'].tolist()
-    EOB_Mn = testSet['EOB_Mn'].tolist()
-    TSC_TEMP = testSet['TSC_TEMP.'].tolist()
-    TSOP_TEMP = testSet['TSOP_TEMP.'].tolist()
-    TSOP_O_PPM = testSet['TSOP_O_PPM '].tolist()
-    O2_2nd_Blow = testSet['O2_2nd_Blow'].tolist()
+def classify_image(input_image):
+    # making seperate lists for labels and respective values and then converting to JSON format
+    metric_data_titles = ["Training Accuracy", "Test Accuracy"]
+    metric_data_values = [98.2, 92.81]
 
-    column_fields = ['HM_Mn', 'Inblow_P', 'Inblow_C', 'Inblow_Mn', 'EOB_Mn', 'TSC_TEMP',
-                     'TSOP_TEMP', 'TSOP_O_PPM', 'O2_2nd_Blow', 'Actual_EOB_P_Values', 'Predicted_EOB_P_Values']
+    # Disable tensorflow compilation warnings
+    os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+
+    # Read the image_data
+    image_data = tf.gfile.FastGFile(input_image, 'rb').read()
+
+    # Loads label file, strips off carriage return
+    label_lines = [line.rstrip() for line
+                   in tf.gfile.GFile("tf_files/retrained_labels.txt")]
+
+    # Un-persists graph from file
+    with tf.gfile.FastGFile("tf_files/retrained_graph.pb", 'rb') as f:
+        graph_def = tf.GraphDef()
+        graph_def.ParseFromString(f.read())
+        _ = tf.import_graph_def(graph_def, name='')
+
+    with tf.Session() as sess:
+        # Feed the image_data as input to the graph and get first prediction
+        softmax_tensor = sess.graph.get_tensor_by_name('final_result:0')
+
+        predictions = sess.run(softmax_tensor, \
+                               {'DecodeJpeg/contents:0': image_data})
+
+        # Sort to show labels of first prediction in order of confidence
+        top_k = predictions[0].argsort()[-len(predictions[0]):][::-1]
+
+        for node_id in top_k:
+            human_string = label_lines[node_id]
+            score = predictions[0][node_id]
+            print('%s (score = %.5f)' % (human_string, score))
+            metric_data_titles.append(human_string + " score")
+            metric_data_values.append(str(round(score,4)))
     
-    #calculating evaluation metrics for gradient boosting model
-    variance_score = explained_variance_score(actualTestData, predictedTestData).round(5)
-    mae = mean_absolute_error(actualTestData, predictedTestData).round(5)
-    mse = mean_squared_error(actualTestData, predictedTestData).round(5)
-    R2_Score = r2_score(actualTestData, predictedTestData).round(5)
-    
-    #making seperate lists for labels and respective values and then converting to JSON format
-    metric_data_titles = ["Training Accuracy", "Test Accuracy", "Step", "Total Time"]
-    
-    metric_data_values = [80.2, 76.81, 900, 12.42]
+
         
     #binding all JSON objects together in one object
-    phosphorus = {'GRID_LABEL': 'Actual Phosphorus values v/s Predicted Phosphorus values Table',
-                  'LINE_CHART_LABEL': 'Actual Phosphorus values v/s Predicted Phosphorus values Line Chart', 
-                  'GRID_FIELDS': column_fields, 
-                  'HM_Mn_1': HM_Mn,
-                  'Inblow_P_2': Inblow_P, 
-                  'Inblow_C_3': Inblow_C, 
-                  'Inblow_Mn_4': Inblow_Mn,
-                  'EOB_Mn_5': EOB_Mn,
-                  'TSC_TEMP_6': TSC_TEMP,
-                  'TSOP_TEMP_7': TSOP_TEMP,
-                  'TSOP_O_PPM_8': TSOP_O_PPM,
-                  'O2_2nd_Blow_9': O2_2nd_Blow,
-                  'Actual_Values_JSON_LINE_CHART_10': actualTestData,
-                  'Predicted_Values_JSON_LINE_CHART_11': predictedTestData,
+    result = {
                   'Phosphorus_Analyized_Metric_Titles': metric_data_titles,
-                  'Phosphorus_Analyized_Metric_Scores': metric_data_values}
+                  'Phosphorus_Analyized_Metric_Scores': metric_data_values
+    }
 
-    return phosphorus
+    return result
 
 
 def allowed_file(filename):
@@ -230,14 +216,24 @@ def dashboard():
 
 @app.route('/phosphorusRegression')
 def phosphorusPrediction():
-    # Load the csv files
-    testSet = pd.read_csv('datasource/phosphorus_regression/Testset.csv')
+    default_png = os.path.join(APP_ROOT, 'uploads', 'converted', 'Default_MRI.png')
+    upload_png = os.path.join(APP_ROOT, 'uploads', 'converted', 'Upload_MRI.png')
+    input_image = default_png
+    # Load the input image file
+    if os.path.isfile(upload_png):
+        input_image = upload_png
 
-    desired_features = ['HM_Mn', 'Inblow_P', 'Inblow_C', 'Inblow_Mn', 'EOB_Mn', 'TSC_TEMP.', 'TSOP_TEMP.', 'TSOP_O_PPM ', 'O2_2nd_Blow']
-    
-    #calling applyingGradientBoostingModel and passing them dataframe for train and test data 
-    JSON_object = applyingGradientBoostingModel(testSet, desired_features)
-    return json.dumps(JSON_object)
+    # submit the input to prediction model
+    json_result = classify_image(input_image)
+
+    # Remove all existed uploads
+    upload_dcm = os.path.join(APP_ROOT, 'uploads', 'mri', 'Upload_MRI.dcm')
+    if os.path.isfile(upload_png):
+        os.remove(upload_png)
+    if os.path.isfile(upload_dcm):
+        os.remove(upload_dcm)
+
+    return json.dumps(json_result)
 
 
 @app.route('/phosphorusDataCleaning')
@@ -267,11 +263,6 @@ def cleanedPhosphorusData():
         with open(return_image, "rb") as image:
             encoded_string = base64.b64encode(image.read())
 
-        # Remove all existed uploads
-        if os.path.isfile(upload_png):
-            os.remove(upload_png)
-        if os.path.isfile(upload_dcm):
-            os.remove(upload_dcm)
     except Exception as exception:
         app.logger.error(str(exception))
     

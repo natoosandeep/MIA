@@ -284,46 +284,6 @@ window.mlaApp.controller(
 																values: $rootScope.phosphorusListDetails.Phosphorus_Analyized_Metric_Scores
 														}
 														
-														/**
-														 * Line chart call
-														 */
-														$scope.phosphorusLineBarChartFilter(undefined, undefined);
-														
-														/***********************
-														 * Phosphorus Grid List
-														 * details
-														 */
-														var phosphorusGridDetails = [];
-														$scope.phosphorusGridDetailsArray = [{HM_Mn_2 : [],
-																							Inblow_P_2: [],
-																							Inblow_C_3: [],
-																							Inblow_Mn_4 : [],
-																							EOB_Mn_5 : [],
-																							TSC_TEMP_6 : [],
-																							TSOP_TEMP_7: [],
-																							TSOP_O_PPM_8 : [],
-																							O2_2nd_Blow_9 : [],
-																							Actual_Values_JSON_LINE_CHART_10 : [],
-																							Predicted_Values_JSON_LINE_CHART_11 : []
-														}];
-														$scope.phosphorusObject1 = [];
-														for(var i = 0; i<$rootScope.phosphorusListDetails.HM_Mn_1.length; i++ ){
-															$scope.phosphorusObject1.push({
-																	HM_Mn_2:$rootScope.phosphorusListDetails.HM_Mn_1[i],
-																	Inblow_P_2: $rootScope.phosphorusListDetails.Inblow_P_2[i],
-																	Inblow_C_3: $rootScope.phosphorusListDetails.Inblow_C_3[i],
-																	Inblow_Mn_4 : $rootScope.phosphorusListDetails.Inblow_Mn_4[i],
-																	EOB_Mn_5 : $rootScope.phosphorusListDetails.EOB_Mn_5[i],
-																	TSC_TEMP_6 : $rootScope.phosphorusListDetails.TSC_TEMP_6[i],
-																	TSOP_TEMP_7: $rootScope.phosphorusListDetails.TSOP_TEMP_7[i],
-																	TSOP_O_PPM_8 : $rootScope.phosphorusListDetails.TSOP_O_PPM_8[i],
-																	O2_2nd_Blow_9 : $rootScope.phosphorusListDetails.O2_2nd_Blow_9[i],
-																	Actual_Values_JSON_LINE_CHART_10 : $rootScope.phosphorusListDetails.Actual_Values_JSON_LINE_CHART_10[i],
-																	Predicted_Values_JSON_LINE_CHART_11 : $rootScope.phosphorusListDetails.Predicted_Values_JSON_LINE_CHART_11[i]
-															});
-															
-														}
-														console.log($scope.phosphorusObject1)
 												}else{
 														$rootScope.phosphorusListDetails = [];
 													}
