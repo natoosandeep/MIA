@@ -13,11 +13,6 @@ from os.path import isfile, join
 import tensorflow as tf
 import random
 
-from sklearn.metrics import explained_variance_score
-from sklearn.metrics import mean_absolute_error
-from sklearn.metrics import mean_squared_error
-from sklearn.metrics import r2_score
-from sklearn.externals import joblib
 import logging
 from logging.handlers import RotatingFileHandler
 
@@ -93,10 +88,9 @@ def classify_image(input_image):
     top_value = round(top_value * 100)
     for index, item in enumerate(barchart_label):
         item_value = random.randint(1,min(60, top_value-10))
-        item_value1 = item_value
+        item_value1 = 100
         item_value2 = item_value
         if (index+1) == top_GT:
-            item_value1 = 100
             item_value2 = top_value
 
         bar_chart_list_first.append(item_value1)
@@ -105,12 +99,18 @@ def classify_image(input_image):
         bar_chart_list_first,
         bar_chart_list_second,
     ]
+
+    # Segmentation message
+    segmentation_msg_placeholder = "Good" if top_value >= 70 else "Moderate" if (40< top_value < 70) else "Bad"
+    segmentation_msg = "{} segmentation quality".format(segmentation_msg_placeholder)
+
     # binding all JSON objects together in one object
     result = {
                   'Phosphorus_Analyized_Metric_Titles': metric_data_titles,
                   'Phosphorus_Analyized_Metric_Scores': metric_data_values,
                   'Match_Comparison_Labels': barchart_label,
                   'Match_Comparison_Values': barchart_data,
+                  'Segmentation_Message': segmentation_msg,
     }
 
     return result
