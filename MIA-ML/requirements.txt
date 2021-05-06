@@ -20,7 +20,7 @@ decorator==4.2.1
 entrypoints==0.2.3
 et-xmlfile==1.0.1
 Flask==0.12.2
-Flask-Cors==3.0.4
+Flask-Cors==3.0.9
 floyd-cli==0.10.37
 gunicorn==19.7.1
 h5py==2.7.1
